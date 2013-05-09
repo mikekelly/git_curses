@@ -1,29 +1,36 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 require "curses"
+require_relative "../lib/git_curses"
 
-CURSOR_INVISIBLE = 0
-VISIBLE_LINES = 15
-
-def update_display(test_lines, window, item_index)
-  screen_height = Curses.lines()
-  screen_width  = Curses.cols()
-
+def update_display(test_lines, window, list_state)
   window.clear
-
-  window.addstr("item_index = #{item_index}\n")
-  window.addstr("screen_height = #{screen_height}\n")
-  window.addstr("screen_width = #{screen_width}\n")
-  display_lines(test_lines, window, VISIBLE_LINES, item_index)
+  display_lines(test_lines, window, VISIBLE_LINES, list_state)
   window.refresh
 end
 
-def display_lines(test_lines, window, visible_lines, item_index)
-  display_items = Array(test_lines.slice(item_index, visible_lines))
-  display_items.each { |line| window.addstr(line) }
+def display_lines(test_lines, window, visible_lines, list_state)
+  window.setpos(0 ,0)
+  window.attron(Curses::color_pair(NORMAL_COLOR)| Curses::A_NORMAL) do
+    window.addstr "item index = #{list_state.item_index}\n"
+    window.addstr "list start index = #{list_state.list_index}\n"
+    window.addstr "highlight index = #{list_state.highlight_index}\n"
+  end
+  display_items = Array(test_lines.slice(list_state.list_index, visible_lines))
+  display_items.each_with_index do |line, index|
+    color = index == list_state.highlight_index ? HIGHLIGHT_COLOR : NORMAL_COLOR
+    window.attron(Curses::color_pair(color)| Curses::A_NORMAL) do
+      window.addstr(line)
+    end
+  end
 end
 
 test_lines = (1..50).map{|num| "Line #{num}\n"}
+
+CURSOR_INVISIBLE = 0
+
+HIGHLIGHT_COLOR = 1
+NORMAL_COLOR = 2
 
 # Don't echo user input
 Curses.noecho
@@ -34,20 +41,30 @@ Curses.cbreak
 # Make cursor invisible
 Curses.curs_set(CURSOR_INVISIBLE)
 
-item_index = 0
+list_state = ListState.new(test_lines.count)
 
 window = Curses.init_screen
+Curses.start_color
+
+Curses.init_pair(HIGHLIGHT_COLOR, Curses::COLOR_BLACK, Curses::COLOR_WHITE)
+Curses.init_pair(NORMAL_COLOR, Curses::COLOR_WHITE, Curses::COLOR_BLACK)
+
+SCREEN_HEIGHT = Curses.lines()
+SCREEN_WIDTH  = Curses.cols()
+
+VISIBLE_LINES = [15, SCREEN_HEIGHT].min
 begin
-  update_display(test_lines, window, item_index)
+  window.keypad(true)
+  update_display(test_lines, window, list_state)
 
   while (ch = window.getch) != 'q' do
-    if ch == 'k'
-      item_index = [item_index + 1, [test_lines.length - VISIBLE_LINES, 0].max].min
-    elsif ch == 'j'
-      item_index = [item_index - 1, 0].max
+    if ch == Curses::Key::DOWN
+      list_state.move_down
+    elsif ch == Curses::Key::UP
+      list_state.move_up
     end
 
-    update_display(test_lines, window, item_index)
+    update_display(test_lines, window, list_state)
   end
 ensure
   Curses.close_screen
