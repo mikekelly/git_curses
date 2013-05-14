@@ -4,7 +4,6 @@ require "curses"
 require_relative "../lib/git_curses"
 
 def update_display(test_lines, window, list_state)
-  window.clear
   display_lines(test_lines, window, VISIBLE_LINES, list_state)
   window.refresh
 end
