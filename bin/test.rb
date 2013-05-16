@@ -36,6 +36,8 @@ NORMAL_COLOR = 2
 Curses.noecho
 # Setup colors
 Curses.start_color
+Curses.init_pair(HIGHLIGHT_COLOR, Curses::COLOR_BLACK, Curses::COLOR_WHITE)
+Curses.init_pair(NORMAL_COLOR, Curses::COLOR_WHITE, Curses::COLOR_BLACK)
 # Make chars typed by user availble to program instantly
 Curses.cbreak
 # Make cursor invisible
@@ -44,10 +46,6 @@ Curses.curs_set(CURSOR_INVISIBLE)
 list_state = ListState.new(test_lines.count)
 
 window = Curses.init_screen
-Curses.start_color
-
-Curses.init_pair(HIGHLIGHT_COLOR, Curses::COLOR_BLACK, Curses::COLOR_WHITE)
-Curses.init_pair(NORMAL_COLOR, Curses::COLOR_WHITE, Curses::COLOR_BLACK)
 
 SCREEN_HEIGHT = Curses.lines()
 SCREEN_WIDTH  = Curses.cols()
