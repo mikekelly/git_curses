@@ -42,14 +42,15 @@ Curses.cbreak
 # Make cursor invisible
 Curses.curs_set(CURSOR_INVISIBLE)
 
-list_state = ListState.new(test_lines.count)
-
 window = Curses.init_screen
 
 SCREEN_HEIGHT = Curses.lines()
 SCREEN_WIDTH  = Curses.cols()
 
 VISIBLE_LINES = [15, SCREEN_HEIGHT].min
+
+list_state = ListState.new(test_lines.count, VISIBLE_LINES)
+
 begin
   window.keypad(true)
   update_display(test_lines, window, list_state)
