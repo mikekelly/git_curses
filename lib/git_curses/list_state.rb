@@ -8,11 +8,11 @@ class ListState
   attr_reader :item_index, :highlight_index, :list_index
 
   def initialize(line_count, visible_lines)
-    self.item_index = 0
     self.line_count = line_count
+    @visible_lines = visible_lines
+    self.item_index = 0
     self.highlight_index = 0
     self.list_index = 0
-    @visible_lines = visible_lines
   end
 
   def move_up
