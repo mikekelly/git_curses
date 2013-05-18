@@ -4,48 +4,47 @@ class Fixnum
   end
 end
 
-class ListState
-  def initialize(list, visible_lines)
-    self.list = list
-    @visible_lines = visible_lines
-    self.item_index = 0
-    self.highlight_index = 0
-    self.list_index = 0
-  end
-
-  def move_up
-    self.item_index = [item_index - 1, 0].max
-
-    old_highlight_index = highlight_index
-    self.highlight_index = [highlight_index - 1, 0].max
-    highlight_index_changed = old_highlight_index != highlight_index
-
-    if !highlight_index_changed && highlight_index == 0
-      self.list_index = [list_index - 1, 0].max
+module GitCurses
+  class ListState
+    def initialize(list, visible_lines, list_highlight = ListHighlight.new(visible_lines))
+      self.list = list
+      @visible_lines = visible_lines
+      self.item_index = 0
+      #self.highlight_index = 0
+      self.list_highlight = list_highlight
+      self.list_index = 0
     end
-  end
 
-  def move_down
-    self.item_index = [item_index + 1, list.count.as_index].min
+    def move_up
+      self.item_index = [item_index - 1, 0].max
 
-    old_highlight_index = highlight_index
-    self.highlight_index = [highlight_index + 1, visible_lines.as_index].min
-    highlight_index_changed = old_highlight_index != highlight_index
+      list_highlight.move_up
 
-    if !highlight_index_changed && highlight_index == visible_lines.as_index
-      self.list_index = [list_index + 1, list.count - visible_lines].min
+      if !list_highlight.index_changed? && list_highlight.at_start?
+        self.list_index = [list_index - 1, 0].max
+      end
     end
-  end
 
-  def highlighted?(index)
-    index == highlight_index
-  end
+    def move_down
+      self.item_index = [item_index + 1, list.count.as_index].min
 
-  def display_items
-    Array(list.slice(list_index, visible_lines))
-  end
+      list_highlight.move_down
 
-private
-  attr_reader :visible_lines
-  attr_accessor :list, :item_index, :list_index, :highlight_index
+      if !list_highlight.index_changed? && list_highlight.at_end?
+        self.list_index = [list_index + 1, list.count - visible_lines].min
+      end
+    end
+
+    def highlighted?(index)
+      list_highlight.highlighted?(index)
+    end
+
+    def display_items
+      Array(list.slice(list_index, visible_lines))
+    end
+
+  private
+    attr_reader :visible_lines
+    attr_accessor :list, :item_index, :list_index, :list_highlight
+  end
 end

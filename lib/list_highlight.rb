@@ -1,2 +1,0 @@
-class ListHighlight
-end
