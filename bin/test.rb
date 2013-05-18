@@ -11,8 +11,8 @@ end
 def display_lines(window, list_state)
   window.setpos(0 ,0)
   window.attron(Curses::color_pair(NORMAL_COLOR)| Curses::A_NORMAL) do
-    window.addstr "item index = #{list_state.item_index}\n"
-    window.addstr "list start index = #{list_state.list_index}\n"
+    window.addstr "item index = #{list_state.send(:item_index)}\n"
+    window.addstr "list start index = #{list_state.send(:list_index)}\n"
     window.addstr "highlight index = #{list_state.highlight_index}\n"
   end
 

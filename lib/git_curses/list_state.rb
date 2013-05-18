@@ -5,7 +5,7 @@ class Fixnum
 end
 
 class ListState
-  attr_reader :item_index, :highlight_index, :list_index
+  attr_reader :highlight_index
 
   def initialize(list, visible_lines)
     self.list = list
@@ -44,6 +44,6 @@ class ListState
   end
 private
   attr_reader :visible_lines
-  attr_writer   :item_index, :highlight_index, :list_index
-  attr_accessor :list
+  attr_writer  :highlight_index
+  attr_accessor :list, :item_index, :list_index
 end
