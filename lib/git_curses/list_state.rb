@@ -39,6 +39,10 @@ class ListState
     end
   end
 
+  def highlighted?(index)
+    index == highlight_index
+  end
+
   def display_items
     Array(list.slice(list_index, visible_lines))
   end

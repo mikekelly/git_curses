@@ -17,7 +17,7 @@ def display_lines(window, list_state)
   end
 
   list_state.display_items.each_with_index do |line, index|
-    color = index == list_state.highlight_index ? HIGHLIGHT_COLOR : NORMAL_COLOR
+    color = list_state.highlighted?(index) ? HIGHLIGHT_COLOR : NORMAL_COLOR
     window.attron(Curses::color_pair(color)| Curses::A_NORMAL) do
       window.addstr(line)
     end
