@@ -4,11 +4,11 @@ require "curses"
 require_relative "../lib/git_curses"
 
 def update_display(window, list_state)
-  display_lines(window, VISIBLE_LINES, list_state)
+  display_lines(window, list_state)
   window.refresh
 end
 
-def display_lines(window, visible_lines, list_state)
+def display_lines(window, list_state)
   window.setpos(0 ,0)
   window.attron(Curses::color_pair(NORMAL_COLOR)| Curses::A_NORMAL) do
     window.addstr "item index = #{list_state.item_index}\n"
@@ -47,9 +47,9 @@ window = Curses.init_screen
 SCREEN_HEIGHT = Curses.lines()
 SCREEN_WIDTH  = Curses.cols()
 
-VISIBLE_LINES = [15, SCREEN_HEIGHT].min
+visible_lines = [15, SCREEN_HEIGHT].min
 
-list_state = ListState.new(test_lines, VISIBLE_LINES)
+list_state = ListState.new(test_lines, visible_lines)
 
 begin
   window.keypad(true)
