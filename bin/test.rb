@@ -3,20 +3,20 @@
 require "curses"
 require_relative "../lib/git_curses"
 
-def update_display(test_lines, window, list_state)
-  display_lines(test_lines, window, VISIBLE_LINES, list_state)
+def update_display(window, list_state)
+  display_lines(window, VISIBLE_LINES, list_state)
   window.refresh
 end
 
-def display_lines(test_lines, window, visible_lines, list_state)
+def display_lines(window, visible_lines, list_state)
   window.setpos(0 ,0)
   window.attron(Curses::color_pair(NORMAL_COLOR)| Curses::A_NORMAL) do
     window.addstr "item index = #{list_state.item_index}\n"
     window.addstr "list start index = #{list_state.list_index}\n"
     window.addstr "highlight index = #{list_state.highlight_index}\n"
   end
-  display_items = Array(test_lines.slice(list_state.list_index, visible_lines))
-  display_items.each_with_index do |line, index|
+
+  list_state.display_items.each_with_index do |line, index|
     color = index == list_state.highlight_index ? HIGHLIGHT_COLOR : NORMAL_COLOR
     window.attron(Curses::color_pair(color)| Curses::A_NORMAL) do
       window.addstr(line)
@@ -49,11 +49,11 @@ SCREEN_WIDTH  = Curses.cols()
 
 VISIBLE_LINES = [15, SCREEN_HEIGHT].min
 
-list_state = ListState.new(test_lines.count, VISIBLE_LINES)
+list_state = ListState.new(test_lines, VISIBLE_LINES)
 
 begin
   window.keypad(true)
-  update_display(test_lines, window, list_state)
+  update_display(window, list_state)
 
   while (ch = window.getch) != 'q' do
     if ch == Curses::Key::DOWN
@@ -62,7 +62,7 @@ begin
       list_state.move_up
     end
 
-    update_display(test_lines, window, list_state)
+    update_display(window, list_state)
   end
 ensure
   Curses.close_screen
