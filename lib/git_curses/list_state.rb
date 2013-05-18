@@ -42,6 +42,7 @@ class ListState
   def display_items
     Array(list.slice(list_index, visible_lines))
   end
+
 private
   attr_reader :visible_lines
   attr_writer  :highlight_index
