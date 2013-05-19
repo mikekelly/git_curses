@@ -18,7 +18,7 @@ module GitCurses
 
       list_highlight.move_up
 
-      if !list_highlight.index_changed? && list_highlight.at_start?
+      if list_highlight.upper_boundary_pushed?
         self.list_index = [list_index - 1, 0].max
       end
     end
@@ -28,7 +28,7 @@ module GitCurses
 
       list_highlight.move_down
 
-      if !list_highlight.index_changed? && list_highlight.at_end?
+      if list_highlight.lower_boundary_pushed?
         self.list_index = [list_index + 1, indexed_list.count - visible_lines].min
       end
     end
