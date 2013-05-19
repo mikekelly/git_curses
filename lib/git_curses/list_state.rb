@@ -6,11 +6,11 @@ end
 
 module GitCurses
   class ListState
-    def initialize(indexed_list, visible_lines, list_highlight = ListHighlight.new(visible_lines))
+    def initialize(indexed_list, visible_lines, list_highlight = ListHighlight.new(visible_lines), displayed_list_items = DisplayedListItems.new(indexed_list.count, visible_lines))
       @indexed_list = indexed_list
       @visible_lines = visible_lines
       @list_highlight = list_highlight
-      self.list_index = 0
+      @displayed_list_items = displayed_list_items
     end
 
     def move_up
@@ -19,7 +19,7 @@ module GitCurses
       list_highlight.move_up
 
       if list_highlight.upper_boundary_pushed?
-        self.list_index = [list_index - 1, 0].max
+        displayed_list_items.move_up
       end
     end
 
@@ -29,7 +29,7 @@ module GitCurses
       list_highlight.move_down
 
       if list_highlight.lower_boundary_pushed?
-        self.list_index = [list_index + 1, indexed_list.count - visible_lines].min
+        displayed_list_items.move_down
       end
     end
 
@@ -38,11 +38,11 @@ module GitCurses
     end
 
     def display_items
-      Array(indexed_list.slice(list_index, visible_lines))
+      displayed_list_items.get_items(indexed_list)
     end
 
   private
-    attr_reader :visible_lines, :indexed_list, :list_highlight
-    attr_accessor :item_index, :list_index
+    attr_reader :visible_lines, :indexed_list, :list_highlight, :displayed_list_items
+    attr_accessor :item_index
   end
 end

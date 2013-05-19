@@ -11,10 +11,6 @@ end
 
 def display_lines(window, list_state)
   window.setpos(0 ,0)
-  window.attron(Curses::color_pair(NORMAL_COLOR)| Curses::A_NORMAL) do
-    window.addstr "list start index = #{list_state.send(:list_index)}\n"
-  end
-
   list_state.display_items.each_with_index do |line, index|
     color = list_state.highlighted?(index) ? HIGHLIGHT_COLOR : NORMAL_COLOR
     window.attron(Curses::color_pair(color)| Curses::A_NORMAL) do
