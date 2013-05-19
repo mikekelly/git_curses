@@ -9,7 +9,7 @@ module GitCurses
     def initialize(indexed_list, visible_lines, list_highlight = ListHighlight.new(visible_lines))
       @indexed_list = indexed_list
       @visible_lines = visible_lines
-      self.list_highlight = list_highlight
+      @list_highlight = list_highlight
       self.list_index = 0
     end
 
@@ -42,7 +42,7 @@ module GitCurses
     end
 
   private
-    attr_reader :visible_lines, :indexed_list
-    attr_accessor :item_index, :list_index, :list_highlight
+    attr_reader :visible_lines, :indexed_list, :list_highlight
+    attr_accessor :item_index, :list_index
   end
 end
