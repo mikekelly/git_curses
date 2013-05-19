@@ -43,6 +43,5 @@ module GitCurses
 
   private
     attr_reader :visible_lines, :indexed_list, :list_highlight, :displayed_list_items
-    attr_accessor :item_index
   end
 end
