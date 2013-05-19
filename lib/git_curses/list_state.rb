@@ -10,7 +10,6 @@ module GitCurses
       self.list = list
       @visible_lines = visible_lines
       self.item_index = 0
-      #self.highlight_index = 0
       self.list_highlight = list_highlight
       self.list_index = 0
     end
