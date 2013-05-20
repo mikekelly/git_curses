@@ -5,6 +5,8 @@ module GitCurses
       self.index = 0
     end
 
+    attr_reader :index
+
     def slice(start, length)
       list.slice(start, length)
     end
@@ -22,6 +24,7 @@ module GitCurses
     end
 
   private
-    attr_accessor :list, :index
+    attr_writer :index
+    attr_accessor :list
   end
 end
