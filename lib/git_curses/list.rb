@@ -2,7 +2,7 @@ module GitCurses
   class List
     def initialize(list = [], index = 0)
       self.list = list
-      self.index = 0
+      self.index = index
     end
 
     attr_reader :index
