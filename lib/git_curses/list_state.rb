@@ -1,9 +1,3 @@
-class Fixnum
-  def as_index
-    self - 1
-  end
-end
-
 module GitCurses
   class ListState
     def initialize(indexed_list, visible_lines, list_highlight = ListHighlight.new(visible_lines), displayed_list_items = DisplayedListItems.new(indexed_list.count, visible_lines))
