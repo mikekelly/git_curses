@@ -1,5 +1,5 @@
 module GitCurses
-  class IndexedList
+  class List
     def initialize(list = [], index = 0)
       self.list = list
       self.index = 0

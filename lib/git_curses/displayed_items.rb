@@ -1,4 +1,4 @@
-class DisplayedListItems
+class DisplayedItems
   def initialize(list_count, visible_lines, index = 0)
     @list_count = list_count
     @visible_lines = visible_lines

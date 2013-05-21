@@ -1,5 +1,5 @@
 module GitCurses
-  class ListHighlight
+  class Highlight
     def initialize(visible_lines, index = 0)
       @visible_lines = visible_lines
       self.index = index

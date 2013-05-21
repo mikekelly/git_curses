@@ -19,7 +19,7 @@ def display_lines(window, list_state)
   end
 end
 
-test_lines = IndexedList.new (1..50).map{|num| "Line #{num}\n"}
+test_lines = List.new (1..50).map{|num| "Line #{num}\n"}
 
 CURSOR_INVISIBLE = 0
 
