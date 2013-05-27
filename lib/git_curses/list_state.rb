@@ -1,6 +1,6 @@
 module GitCurses
   class ListState
-    def initialize(list, visible_lines, highlight = Highlight.new(visible_lines), displayed_items = DisplayedItems.new(list.count, visible_lines))
+    def initialize(list, visible_lines, highlight = Highlight.new(visible_lines), displayed_items = DisplayedItems.new(list, visible_lines))
       @list = list
       @visible_lines = visible_lines
       @highlight = highlight
@@ -32,7 +32,7 @@ module GitCurses
     end
 
     def display_items
-      displayed_items.get_items(list)
+      displayed_items.get_items
     end
 
   private
