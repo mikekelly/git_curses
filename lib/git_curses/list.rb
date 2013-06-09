@@ -1,6 +1,9 @@
 module GitCurses
   class List
     def initialize(list = [], index = 0)
+      if list.count > 0 && index > list.count.as_index
+        raise ArgumentError.new('Index supplied out of bounds')
+      end
       self.list = list
       self.index = index
     end
