@@ -32,7 +32,7 @@ module GitCurses
     end
 
     def display_items
-      displayed_items.get_items.each_with_index.map do |line, index|
+      displayed_items.each_with_index.map do |line, index|
         {
           :line  => line,
           :style => line_style(index)

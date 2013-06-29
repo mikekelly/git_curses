@@ -1,6 +1,9 @@
 class DisplayedItems
-  def initialize(items, visible_lines, index = 0)
-    @items = items
+
+  include Enumerable
+
+  def initialize(lines, visible_lines, index = 0)
+    @lines = lines
     @visible_lines = visible_lines
 
     raise(ArgumentError, "index cannot be < 0") if index < 0
@@ -16,15 +19,21 @@ class DisplayedItems
     self.index = [index + 1, max_index].min
   end
 
-  def get_items
-    Array(items.slice(index, visible_lines))
+  def items
+    Array(lines.slice(index, visible_lines))
+  end
+
+  def each
+    items.each do |item|
+      yield item
+    end
   end
 
   private
   def max_index
-    items.count - visible_lines
+    lines.count - visible_lines
   end
 
-  attr_reader :items, :visible_lines
+  attr_reader :lines, :visible_lines
   attr_accessor :index
 end
