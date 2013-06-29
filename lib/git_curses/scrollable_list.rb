@@ -10,20 +10,20 @@ class ScrollableList
   end
 
   def run
-    window = Curses.init_screen
+    @window = Curses.init_screen
 
     begin
-      window.keypad(true)
-      update_display(window)
+      @window.keypad(true)
+      update_display
 
-      while (ch = window.getch) != 'q' do
+      while (ch = @window.getch) != 'q' do
         if ch == Curses::Key::DOWN
           @list_state.move_down
         elsif ch == Curses::Key::UP
           @list_state.move_up
         end
 
-        update_display(window)
+        update_display
       end
     ensure
       Curses.close_screen
@@ -56,18 +56,38 @@ private
     [15, screen_height].min
   end
 
-  def update_display(window)
-    display_lines(window)
-    window.refresh
+  def update_display
+    reset_cursor
+    display_lines
+    refresh_window
   end
 
-  def display_lines(window)
-    window.setpos(0 ,0)
-    @list_state.display_items.each_with_index do |line, index|
-      color = @list_state.highlighted?(index) ? HIGHLIGHT_COLOR : NORMAL_COLOR
-      window.attron(Curses::color_pair(color)| Curses::A_NORMAL) do
-        window.addstr(line)
-      end
+  def display_lines
+    @list_state.display_items.each do |item|
+      display_line(item.fetch(:line), item.fetch(:style))
+    end
+  end
+
+  def refresh_window
+    @window.refresh
+  end
+
+  def reset_cursor
+    @window.setpos(0 ,0)
+  end
+
+  def color_for_style(style)
+    case style
+    when :normal
+      NORMAL_COLOR
+    when :highlight
+      HIGHLIGHT_COLOR
+    end
+  end
+
+  def display_line(line, style = :normal)
+    @window.attron(Curses::color_pair(color_for_style(style))| Curses::A_NORMAL) do
+      @window.addstr(line)
     end
   end
 end

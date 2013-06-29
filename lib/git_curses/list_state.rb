@@ -32,10 +32,23 @@ module GitCurses
     end
 
     def display_items
-      displayed_items.get_items
+      displayed_items.get_items.each_with_index.map do |line, index|
+        {
+          :line  => line,
+          :style => line_style(index)
+        }
+      end
     end
 
   private
     attr_reader :visible_lines, :list, :highlight, :displayed_items
+
+    def line_style(index)
+      if highlight.highlighted?(index)
+        :highlight
+      else
+        :normal
+      end
+    end
   end
 end
