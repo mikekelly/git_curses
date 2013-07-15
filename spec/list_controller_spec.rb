@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe ScrollableList do
-  subject { ScrollableList.new(lines) }
+describe ListController do
+  subject { ListController.new(lines) }
 
   let(:lines) { double 'lines' }
   let(:curses_window) { double 'curses window' }

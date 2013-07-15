@@ -6,4 +6,4 @@ include GitCurses
 
 test_lines = List.new (1..50).map{|num| "Line #{num}\n"}
 
-ScrollableList.new(test_lines).run
+ListController.new(test_lines).run

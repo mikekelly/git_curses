@@ -1,4 +1,4 @@
-class ScrollableList
+class ListController
   def initialize(lines)
     @lines = lines
   end
