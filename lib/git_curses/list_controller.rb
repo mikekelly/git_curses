@@ -5,17 +5,22 @@ class ListController
 
   def run
     with_window do |window|
+      input = Input.new(window)
       list_state = ListState.new(lines, window.visible_lines)
-      window.update_display(list_state)
 
-      while (ch = window.getch) != 'q' do
-        if ch == Curses::Key::DOWN
+      command = :nop
+
+      while command != :quit
+        case command
+        when :move_down
           list_state.move_down
-        elsif ch == Curses::Key::UP
+        when :move_up
           list_state.move_up
         end
 
         window.update_display(list_state)
+
+        command = input.next_command
       end
     end
   end
