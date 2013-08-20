@@ -5,6 +5,6 @@ require "curses"
 require_relative "../lib/git_curses"
 include GitCurses
 
-test_lines = Array.new (1..50).map{|num| "Line #{num}\n"}
+log = GitLog.new
 
-ListController.new(test_lines).run
+ListController.new(log.lines).run

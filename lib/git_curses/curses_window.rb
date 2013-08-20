@@ -73,7 +73,7 @@ private
 
   def display_line(line, style = :normal)
     @window.attron(Curses::color_pair(color_for_style(style))| Curses::A_NORMAL) do
-      @window.addstr(line)
+      @window.addstr(line + "\n")
     end
   end
 
