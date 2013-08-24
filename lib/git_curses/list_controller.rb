@@ -6,7 +6,7 @@ class ListController
   def run
     with_window do |window|
       input = Input.new(window)
-      list_state = ListState.new(lines, window.visible_lines)
+      list_state = ListState.new(lines, window.visible_line_count)
 
       command = :nop
 

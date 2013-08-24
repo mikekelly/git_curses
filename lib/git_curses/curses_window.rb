@@ -31,7 +31,7 @@ class CursesWindow
     Curses.close_screen
   end
 
-  def visible_lines
+  def visible_line_count
     [15, screen_height].min
   end
 
