@@ -38,10 +38,25 @@ class CursesWindow
   def update_display(list_state)
     reset_cursor
     display_lines(list_state)
+    display_debug_message(list_state.debug_message)
     refresh_window
   end
 
 private
+  def display_debug_message(message)
+    if message.to_s != ''
+      error_line_index =  screen_height - 2
+      clear_line(error_line_index)
+      @window.setpos(error_line_index, 0)
+      display_line("** #{message}")
+    end
+  end
+
+  def clear_line(index)
+    @window.setpos(index, 0)
+    display_line(' ' * Curses.cols())
+  end
+
   def reset_cursor
     @window.setpos(0 ,0)
   end

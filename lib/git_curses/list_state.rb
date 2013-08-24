@@ -31,6 +31,10 @@ module GitCurses
       highlight.highlighted?(index)
     end
 
+    def debug_message
+      ""
+    end
+
     def display_items
       displayed_items.each_with_index.map do |line, index|
         {
