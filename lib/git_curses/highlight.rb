@@ -1,7 +1,7 @@
 module GitCurses
   class Highlight
-    def initialize(visible_lines, index = 0)
-      @visible_lines = visible_lines
+    def initialize(max_index, index = 0)
+      @max_index = max_index
       self.index = index
       reset_flags
     end
@@ -25,7 +25,7 @@ module GitCurses
       reset_flags
 
       old_index = index
-      self.index = [index + 1, visible_lines.as_index].min
+      self.index = [index + 1, max_index].min
       index_changed = old_index != index
 
       self.lower_boundary_pushed = at_end? && !index_changed
@@ -36,7 +36,7 @@ module GitCurses
     end
 
   private
-    attr_reader :visible_lines
+    attr_reader :max_index
     attr_accessor :index
     attr_writer :upper_boundary_pushed, :lower_boundary_pushed
 
@@ -50,7 +50,7 @@ module GitCurses
     end
 
     def at_end?
-      index == visible_lines.as_index
+      index == max_index
     end
   end
 end

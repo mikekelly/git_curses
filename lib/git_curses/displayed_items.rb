@@ -4,10 +4,10 @@ class DisplayedItems
 
   def initialize(list, visible_line_count, index = 0)
     @list = list
+    @max_index = [list.count - visible_line_count, 0].max
     @visible_line_count = visible_line_count
 
     raise(ArgumentError, "index cannot be < 0") if index < 0
-    raise(ArgumentError, "supplied index #{index} is out of bounds for supplied list") if index > max_index
     @index = index
   end
 
@@ -30,10 +30,6 @@ class DisplayedItems
   end
 
   private
-  def max_index
-    list.count - visible_line_count
-  end
-
-  attr_reader :list, :visible_line_count
+  attr_reader :list, :max_index, :visible_line_count
   attr_accessor :index
 end

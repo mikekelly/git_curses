@@ -2,7 +2,8 @@ module GitCurses
   class ListState
     def initialize(lines, visible_line_count)
       @list = List.new(lines)
-      @highlight = Highlight.new(visible_line_count)
+      max_highlight_index = [lines.count, visible_line_count].min.as_index
+      @highlight = Highlight.new(max_highlight_index)
       @displayed_items = DisplayedItems.new(@list, visible_line_count)
     end
 

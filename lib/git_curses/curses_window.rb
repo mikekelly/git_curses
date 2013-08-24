@@ -32,7 +32,7 @@ class CursesWindow
   end
 
   def visible_line_count
-    [15, screen_height].min
+    screen_height
   end
 
   def update_display(list_state)
