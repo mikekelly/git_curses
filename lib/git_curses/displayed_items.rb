@@ -2,8 +2,8 @@ class DisplayedItems
 
   include Enumerable
 
-  def initialize(lines, visible_lines, index = 0)
-    @lines = lines
+  def initialize(list, visible_lines, index = 0)
+    @list = list
     @visible_lines = visible_lines
 
     raise(ArgumentError, "index cannot be < 0") if index < 0
@@ -20,7 +20,7 @@ class DisplayedItems
   end
 
   def items
-    Array(lines.slice(index, visible_lines))
+    Array(list.slice(index, visible_lines))
   end
 
   def each
@@ -31,9 +31,9 @@ class DisplayedItems
 
   private
   def max_index
-    lines.count - visible_lines
+    list.count - visible_lines
   end
 
-  attr_reader :lines, :visible_lines
+  attr_reader :list, :visible_lines
   attr_accessor :index
 end

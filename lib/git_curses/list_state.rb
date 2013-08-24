@@ -1,10 +1,10 @@
 module GitCurses
   class ListState
-    def initialize(list, visible_lines, highlight = Highlight.new(visible_lines), displayed_items = DisplayedItems.new(list, visible_lines))
-      @list = list
+    def initialize(lines, visible_lines)
+      @list = List.new(lines)
       @visible_lines = visible_lines
-      @highlight = highlight
-      @displayed_items = displayed_items
+      @highlight = Highlight.new(visible_lines)
+      @displayed_items = DisplayedItems.new(@list, visible_lines)
     end
 
     def move_up

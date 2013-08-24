@@ -1,16 +1,20 @@
 require_relative 'spec_helper'
 
 describe DisplayedItems do
-  subject { DisplayedItems.new(items, visible_lines, index) }
-  let(:items)    { (1..10).map{|n| "Item #{n}" } }
+  subject { DisplayedItems.new(list, visible_lines, index) }
+  let(:list)    { double 'list', count: list_count  }
   let(:visible_lines) { 5 }
+  let(:test_items) { Array.new(list_count) { |n| "Item #{n}" } }
+  let(:list_count) { 10 }
 
   describe 'initialization' do
+
     context 'deafult initailization' do
-      subject { DisplayedItems.new(items, visible_lines) }
+      subject { DisplayedItems.new(list, visible_lines) }
 
       it 'should be intialized with index 0' do
-        subject.items == ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']
+        list.should_receive(:slice).with(0, visible_lines).and_return([])
+        subject.items
       end
     end
 
@@ -35,7 +39,8 @@ describe DisplayedItems do
     let(:index) { 1 }
 
     it 'should shift list upwards' do
-      subject.items.should == ['Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
+      list.should_receive(:slice).with(1, visible_lines).and_return([])
+      subject.items
     end
   end
 
@@ -44,9 +49,10 @@ describe DisplayedItems do
       let(:index) { 0 }
 
       it 'should stay in same place' do
-        subject.items == ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']
+        list.should_receive(:slice).with(0, visible_lines).twice.and_return([])
+        subject.items
         subject.move_up
-        subject.items == ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']
+        subject.items
       end
     end
 
@@ -54,9 +60,11 @@ describe DisplayedItems do
       let(:index) { 5 }
 
       it 'shift list  up by 1' do
-        subject.items == ['Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10']
+        list.should_receive(:slice).with(5, visible_lines).exactly(1).times.and_return([])
+        list.should_receive(:slice).with(4, visible_lines).exactly(1).times.and_return([])
+        subject.items
         subject.move_up
-        subject.items == ['Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9']
+        subject.items
       end
     end
   end
@@ -66,9 +74,11 @@ describe DisplayedItems do
       let(:index) { 0 }
 
       it 'should move down list' do
-        subject.items == ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']
+        list.should_receive(:slice).with(0, visible_lines).exactly(1).times.and_return([])
+        list.should_receive(:slice).with(1, visible_lines).exactly(1).times.and_return([])
+        subject.items
         subject.move_down
-        subject.items == ['Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
+        subject.items
       end
     end
 
@@ -76,9 +86,10 @@ describe DisplayedItems do
       let(:index) { 5 }
 
       it 'should stay the same' do
-        subject.items == ['Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10']
+        list.should_receive(:slice).with(5, visible_lines).twice.and_return([])
+        subject.items
         subject.move_down
-        subject.items == ['Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10']
+        subject.items
       end
     end
   end
