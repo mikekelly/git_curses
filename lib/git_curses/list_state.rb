@@ -2,7 +2,6 @@ module GitCurses
   class ListState
     def initialize(lines, visible_lines)
       @list = List.new(lines)
-      @visible_lines = visible_lines
       @highlight = Highlight.new(visible_lines)
       @displayed_items = DisplayedItems.new(@list, visible_lines)
     end
@@ -45,7 +44,7 @@ module GitCurses
     end
 
   private
-    attr_reader :visible_lines, :list, :highlight, :displayed_items
+    attr_reader :list, :highlight, :displayed_items
 
     def line_style(index)
       if highlight.highlighted?(index)
