@@ -7,4 +7,4 @@ include GitCurses
 
 log = GitLog.new
 
-ListController.new(log.lines).run
+ListController.new(log.lines, log.shas).run

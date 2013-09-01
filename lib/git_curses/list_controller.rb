@@ -1,6 +1,7 @@
 class ListController
-  def initialize(lines)
+  def initialize(lines, shas)
     @lines = lines
+    @shas = shas
   end
 
   def run
@@ -9,9 +10,15 @@ class ListController
       list_state = ListState.new(lines, window.visible_line_count)
 
       command = :nop
+      done = false
 
-      while command != :quit
+      while !done
         case command
+        when :quit
+          done = true
+        when :copy_sha
+          copy_sha(list_state.index)
+          done = true
         when :move_down
           list_state.move_down
         when :move_up
@@ -26,7 +33,11 @@ class ListController
   end
 
 private
-  attr_reader :lines
+  attr_reader :lines, :shas
+
+  def copy_sha(index)
+    `echo #{shas[index]} | tr -d "\n" | pbcopy`
+  end
 
   def with_window
     window = CursesWindow.new

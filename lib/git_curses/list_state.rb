@@ -44,6 +44,10 @@ module GitCurses
       end
     end
 
+    def index
+      list.index
+    end
+
   private
     attr_reader :list, :highlight, :displayed_items
 

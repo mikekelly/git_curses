@@ -18,6 +18,10 @@ class GitLog
     end
   end
 
+  def shas
+    @shas ||= items.map { |item| item[:sha] }
+  end
+
   attr_reader :items
 
   private
